@@ -1,0 +1,9 @@
+.env
+.env_non.dev
+/venv
+/docker
+*.md
+Dockerfile
+*.yml
+text.txt
+.git
