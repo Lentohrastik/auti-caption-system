@@ -13,6 +13,7 @@ import asyncio
 import threading
 import time
 
+from src.config import CASPAR_HOST
 from src.telegram.utils import parse_filename
 
 
@@ -182,7 +183,7 @@ class Recognizer:
         self.face_encodings = [face_recognition.face_encodings(x)[0] for x in self.face_images]
         
         self.client = Client()
-        self.client.connect('host.docker.internal')
+        self.client.connect(CASPAR_HOST)
         
         self.ws = None
 
@@ -314,11 +315,14 @@ class Main:
     async def start(self, uri):
         self.vid.setup(uri)
         while self.vid.is_opened():
-            frame = self.vid.read()
-            if frame is not None:
-                image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)   # noqa
-                self.rec.recognize(image)
-            await asyncio.sleep(0.01)
+            try:
+                frame = self.vid.read()
+                if frame is not None:
+                    image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)   # noqa
+                    self.rec.recognize(image)
+                await asyncio.sleep(0.01)
+            except Exception as e:
+                pass
         await self.end()
     
     async def end(self):

@@ -1,3 +1,3 @@
 #!/bin/bash
 alembic upgrade head
-python src/main.py
+python3 src/main.py

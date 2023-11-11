@@ -11,7 +11,9 @@ services:
       - .env_non-dev
 
   auto_caption_system:
-    image: lentohrastik/auto-caption-system:latest
+#    image: lentohrastik/auto-caption-system:latest
+    build:
+      context: .
     command: sh -c "
                  sleep 10 &&
                  /auto_caption_system/docker/app.sh"

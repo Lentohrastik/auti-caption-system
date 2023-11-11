@@ -28,19 +28,20 @@ RUN apt-get install -y --fix-missing \
     zip \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
-RUN cd ~ && \
-    mkdir -p dlib && \
-    git clone -b 'v19.9' --single-branch https://github.com/davisking/dlib.git dlib/ && \
-    cd  dlib/ && \
-    python3 setup.py install --yes USE_AVX_INSTRUCTIONS
-
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
-RUN pip install face-recognition==1.3.0 face-recognition-models==0.3.0
+RUN cd ~ && \
+    git clone https://github.com/ageitgey/face_recognition && \
+    cd  face_recognition/ && \
+    python setup.py install
 
 RUN cd ..
-COPY . .
+COPY megrations ./megrations
+COPY docker ./docker
+COPY src ./src
+COPY alembic.ini .
+RUN rm -rf face_recognition
 RUN chmod a+x docker/*.sh
 
 #CMD python src/main.py
