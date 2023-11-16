@@ -2,7 +2,7 @@ from amcp_pylib.core import Client
 from amcp_pylib.module.template import CG_ADD
 
 client = Client()
-print(client.connect('172.18.130.43'))
+print(client.connect('172.18.191.15'))
 with open('text.txt', 'r') as fin:
     text = fin.readline().strip()
     print(text)

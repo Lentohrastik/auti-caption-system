@@ -200,7 +200,7 @@ class Recognizer:
 
     @staticmethod
     def __parse_filename(path):
-        filename = '_'.join(path.split('/')[-1].split('_')[0:2])
+        filename = '_'.join(path.split('/')[-1].split('_')[:3])
 
         full_name, role = parse_filename(filename)
         return full_name, role
@@ -219,6 +219,12 @@ class Recognizer:
     def set_star_title(self):
         self.ws.call(requests.SetInputSettings(inputName="detected_name",
                                                inputSettings={"text": f"Тут будет человек!"}))
+
+    def set_end_title(self):
+        self.ws.call(requests.SetInputSettings(
+            inputName="detected_name",
+            inputSettings={"text": f"Распознавание закончилось!"}
+        ))
 
     def connect_obs(self, host, port, password):
         self.ws = obsws(host, port, password)

@@ -1,7 +1,9 @@
 
 
 async def show_people(message, people, main_menu):
-    for idx, person in enumerate(list(map(lambda x: '_'.join(x.split('/')[-1].split('_')[0:2]), people))):
+    print(people)
+    for idx, person in enumerate(list(map(lambda x: '_'.join(x.split('/')[-1].split('_')[:3]), people))):
+        print(person)
         full_name, role = parse_filename(person)
         await message.answer(f"{idx + 1}) {full_name} -- {role}")
     await message.answer("Текущая база людей", reply_markup=main_menu)

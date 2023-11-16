@@ -40,9 +40,9 @@ async def delete_photo(path: str, session: AsyncSession = Depends(get_async_sess
         await session.execute(
             delete(TeamPhoto).where(TeamPhoto.photo_path == path)
         )
+
         await session.commit()
         os.remove(path)
-        # self.rec.rec.del_photo(idx)       TO DO
         return {
             'status': 'success',
             'data': None,

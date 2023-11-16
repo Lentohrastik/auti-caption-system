@@ -124,7 +124,7 @@ async def start_rec(rtsp: str, team_id: int, session: AsyncSession = Depends(get
 async def end_rec(team_id: int):
     try:
         if team_id in team_to_rec:
-            team_to_rec[team_id].rec.set_star_title()
+            team_to_rec[team_id].rec.set_end_title()
             await team_to_rec[team_id].end()
             return {
                 'status': 'success',

@@ -181,6 +181,7 @@ class AutoCaptionTelegramBot:
                 get_people = rq.get(API_URL + 'get/people', params={'team_id': get_team['data']}).json()
                 if get_people['status'] == 'success':
                     if len(get_people['data']) > 0:
+                        print(get_people['data'])
                         await show_people(message, get_people['data'], main_menu)
                         await message.answer(
                             f"Введите порядковый номер человека (от 1 до {len(get_people['data'])}), "
@@ -214,7 +215,7 @@ class AutoCaptionTelegramBot:
                                              'path': people[idx]
                                          }).json()
                 if delete_photo['status'] == 'success':
-                    person = '_'.join(people[idx].split('/')[-1].split('_')[0:2])
+                    person = '_'.join(people[idx].split('/')[-1].split('_')[:3])
                     await message.answer(f"Фото №{idx + 1}({person}) успешно удалено",
                                          reply_markup=main_menu)
                     await state.finish()
@@ -288,7 +289,7 @@ class AutoCaptionTelegramBot:
             else:
                 print(people[idx])
                 with open(people[idx], "rb") as photo:
-                    full_name, role = parse_filename('_'.join(people[idx].split('/')[-1].split('_')[0:2]))
+                    full_name, role = parse_filename('_'.join(people[idx].split('/')[-1].split('_')[:3]))
                     await message.answer_photo(photo, caption=f"{full_name} -- {role}")
                 await state.finish()
         else:
