@@ -115,7 +115,8 @@ class AutoCaptionTelegramBot:
                 await message.answer("⚠️ Вы не вошли в команду!",
                                      reply_markup=main_menu)
             else:
-                await message.reply("Введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист)",
+                await message.reply("Введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист "
+                                    "или Иванов И. И.-программист или Иванов Иван Иванович-программист)",
                                     reply_markup=inline_menu)
                 await ProfileStatesGroup.add_name.set()
                 state = Dispatcher.get_current().current_state()
@@ -135,7 +136,8 @@ class AutoCaptionTelegramBot:
                 await ProfileStatesGroup.next()
             else:
                 await message.answer(
-                    "Неверный формат! Введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист)",
+                    "Неверный формат! Введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист "
+                    "или Иванов И. И.-программист или Иванов Иван Иванович-программист)",
                     reply_markup=inline_menu)
         else:
             await error_message(message, check_name['details'], state, main_menu)
@@ -215,7 +217,7 @@ class AutoCaptionTelegramBot:
                                              'path': people[idx]
                                          }).json()
                 if delete_photo['status'] == 'success':
-                    person = '_'.join(people[idx].split('/')[-1].split('_')[:3])
+                    person = '_'.join(people[idx].split('/')[-1].split('_')[:-2])
                     await message.answer(f"Фото №{idx + 1}({person}) успешно удалено",
                                          reply_markup=main_menu)
                     await state.finish()
@@ -289,7 +291,7 @@ class AutoCaptionTelegramBot:
             else:
                 print(people[idx])
                 with open(people[idx], "rb") as photo:
-                    full_name, role = parse_filename('_'.join(people[idx].split('/')[-1].split('_')[:3]))
+                    full_name, role = parse_filename('_'.join(people[idx].split('/')[-1].split('_')[:-2]))
                     await message.answer_photo(photo, caption=f"{full_name} -- {role}")
                 await state.finish()
         else:
@@ -359,7 +361,8 @@ class AutoCaptionTelegramBot:
                 await state.finish()
             else:
                 await message.answer(
-                    "Неверный формат! Введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист)",
+                    "Неверный формат! Введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист "
+                    "или Иванов И. И.-программист или Иванов Иван Иванович-программист)",
                     reply_markup=inline_menu)
         else:
             await error_message(message, check_name['details'], state, main_menu)
@@ -588,7 +591,8 @@ class AutoCaptionTelegramBot:
             await callback.answer("Действие отменено!")
         elif callback.data == 'name':
             await callback.answer(
-                "А теперь введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист)")
+                "А теперь введи данные человека в формате: Имя Фамилия-Роль (e.g. Иван Иванов-Программист или Иванов "
+                "И. И.-программист или Иванов Иван Иванович-программист)")
             await ProfileStatesGroup.edit_name.set()
 
     async def cmd_strange_message(self, message: types.Message):

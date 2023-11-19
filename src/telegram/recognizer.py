@@ -200,7 +200,7 @@ class Recognizer:
 
     @staticmethod
     def __parse_filename(path):
-        filename = '_'.join(path.split('/')[-1].split('_')[:3])
+        filename = '_'.join(path.split('/')[-1].split('_')[:-2])
 
         full_name, role = parse_filename(filename)
         return full_name, role
