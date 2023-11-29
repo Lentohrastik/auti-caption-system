@@ -200,7 +200,7 @@ class Recognizer:
 
     @staticmethod
     def __parse_filename(path):
-        filename = '_'.join(path.split('/')[-1].split('_')[:3])
+        filename = '_'.join(path.split('/')[-1].split('_')[:-2])
 
         full_name, role = parse_filename(filename)
         return full_name, role
@@ -223,7 +223,7 @@ class Recognizer:
     def set_end_title(self):
         self.ws.call(requests.SetInputSettings(
             inputName="detected_name",
-            inputSettings={"text": f"Распознавание закончилось!"}
+            inputSettings={"text": f"Распознавание\nзакончилось!"}
         ))
 
     def connect_obs(self, host, port, password):
@@ -254,9 +254,11 @@ class Recognizer:
                 self.text = f'<templateData><componentData id=\"_title\"><data id=\"text\" value=\"{self.face_names[index][0]}\"/></componentData><componentData id=\"_subtitle\"><data id=\"text\" value=\"{self.face_names[index][1]}\"/></componentData></templateData>'
                 with open('text.txt', 'w') as fin:
                     fin.write(self.text)
-                nl = '\n'
                 self.ws.call(requests.SetInputSettings(inputName="detected_name",
-                                                       inputSettings={"text": f"{nl.join(self.face_names[index][0].split())}"}))
+                                                        inputSettings={
+                                                              "text": self.face_names[index][0]
+                                                        }
+                                                       ))
             except BaseException:
                 pass
 
@@ -333,6 +335,7 @@ class Main:
     
     async def end(self):
         self.vid.release()
+        self.rec.ws.disconnect()
 
 # class Stream():
 #     """Class for managing stream from camera"""

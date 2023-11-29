@@ -2,7 +2,7 @@
 
 async def show_people(message, people, main_menu):
     print(people)
-    for idx, person in enumerate(list(map(lambda x: '_'.join(x.split('/')[-1].split('_')[:3]), people))):
+    for idx, person in enumerate(list(map(lambda x: '_'.join(x.split('/')[-1].split('_')[:-2]), people))):
         print(person)
         full_name, role = parse_filename(person)
         await message.answer(f"{idx + 1}) {full_name} -- {role}")
